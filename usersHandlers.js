@@ -81,8 +81,25 @@ const postUser = (req, res) => {
 
 };
 
+const deleteUser = (req, res) => {
+  const id = +req.params.id;
+  database
+    .query("DELETE FROM users WHERE id = ? ", [id])
+    .then(([result]) => {
+      result.affectedRows === 0 ? res.status(404).send("Impossible to delete") : res.sendStatus(405)
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error deleting the User");
+    });
+};
+
+
+
+
 module.exports = {
   getUsers,
   getUsersById,
   postUser,
+  deleteUser,
 };
