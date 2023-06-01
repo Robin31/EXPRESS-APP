@@ -2,7 +2,7 @@ const database = require("./database");
 
 const getUsers = (req, res) => {
 
-  let sql = "select * from users";
+  let sql = "select firstname, lastname, email, city, language from users";
   const sqlValues = [];
 
 
@@ -42,7 +42,7 @@ const getUsersById = (req, res) => {
 
   database
 
-    .query("select * from users where id = ?", [id])
+    .query("select firstname, lastname, email, city, language from users where id = ?", [id])
 
     .then(([users]) => {
 
@@ -70,16 +70,15 @@ const getUsersById = (req, res) => {
 
 const postUser = (req, res) => {
 
-  const { firstName, lastName, email, city, language } = req.body;
+  const { firstname, lastname, email, city, language, hashedPassword } = req.body;
 
 
   database
 
     .query(
 
-      "INSERT INTO movies(firstName, lastName, email, city, language) VALUES (?, ?, ?, ?, ?)",
-
-      [firstName, lastName, email, city, language]
+      "INSERT INTO users(firstname, lastname, email, city, language, hashedPassword) VALUES (?, ?, ?, ?, ?,?)",
+      [firstname, lastname, email, city, language, hashedPassword]
 
     )
 
