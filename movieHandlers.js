@@ -27,10 +27,25 @@ const movies = [
 ];
 
 const getMovies = (req, res) => {
+  let sql = 'select * from movies';
+  const sqlValues = [];
 
+  if (req.query.color != null) {
+    sql += ' where color = ?';
+    sqlValues.push(req.query.color);
+
+    if (req.query.max_duration != null) {
+      sql += ' and duration <= ?';
+      sqlValues.push(req.query.max_duration);
+    }
+  } else if (req.query.max_duration != null) {
+    sql += ' where duration <= ?';
+    sqlValues.push(req.query.max_duration);
+  }
+  console.log(req.query);
   database
 
-    .query("select * from movies")
+    .query(sql, sqlValues)
 
     .then(([movies]) => {
 
@@ -42,7 +57,7 @@ const getMovies = (req, res) => {
 
       console.error(err);
 
-      res.status(500).send("Error retrieving data from database");
+      res.status(500).send('Error retrieving data from database');
 
     });
 };
@@ -52,7 +67,7 @@ const getMovieById = (req, res) => {
 
   database
 
-    .query("select * from movies where id = ?", [id])
+    .query('select * from movies where id = ?', [id])
 
     .then(([movies]) => {
 
@@ -62,7 +77,7 @@ const getMovieById = (req, res) => {
 
       } else {
 
-        res.status(404).send("Not Found");
+        res.status(404).send('Not Found');
 
       }
 
@@ -72,7 +87,7 @@ const getMovieById = (req, res) => {
 
       console.error(err);
 
-      res.status(500).send("Error retrieving data from database");
+      res.status(500).send('Error retrieving data from database');
 
     });
 
@@ -87,7 +102,7 @@ const postMovie = (req, res) => {
 
     .query(
 
-      "INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
+      'INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)',
 
       [title, director, year, color, duration]
 
@@ -103,7 +118,7 @@ const postMovie = (req, res) => {
 
       console.error(err);
 
-      res.status(500).send("Error saving the movie");
+      res.status(500).send('Error saving the movie');
 
     });
 
@@ -120,7 +135,7 @@ const updateMovie = (req, res) => {
 
     .query(
 
-      "update movies set title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?",
+      'update movies set title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?',
 
       [title, director, year, color, duration, id]
 
@@ -130,7 +145,7 @@ const updateMovie = (req, res) => {
 
       if (result.affectedRows === 0) {
 
-        res.status(404).send("Not Found");
+        res.status(404).send('Not Found');
 
       } else {
 
@@ -144,7 +159,7 @@ const updateMovie = (req, res) => {
 
       console.error(err);
 
-      res.status(500).send("Error editing the movie");
+      res.status(500).send('Error editing the movie');
 
     });
 
@@ -157,13 +172,13 @@ const deleteMovie = (req, res) => {
 
   database
 
-    .query("delete from movies where id = ?", [id])
+    .query('delete from movies where id = ?', [id])
 
     .then(([result]) => {
 
       if (result.affectedRows === 0) {
 
-        res.status(404).send("Not Found");
+        res.status(404).send('Not Found');
 
       } else {
 
@@ -177,7 +192,7 @@ const deleteMovie = (req, res) => {
 
       console.error(err);
 
-      res.status(500).send("Error deleting the movie");
+      res.status(500).send('Error deleting the movie');
 
     });
 
