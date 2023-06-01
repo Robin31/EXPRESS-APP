@@ -150,6 +150,7 @@ const updateMovie = (req, res) => {
 
 };
 
+
 const deleteMovie = (req, res) => {
 
   const id = parseInt(req.params.id);
@@ -182,6 +183,7 @@ const deleteMovie = (req, res) => {
     });
 
 };
+
 
 
 

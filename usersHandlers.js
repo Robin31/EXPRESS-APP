@@ -89,6 +89,9 @@ const updateUser = (req, res) => {
       [firstname, lastname, email, city, language, id])
     .then(([result]) =>
       result.affectedRows === 0 ? res.status(404).send("Not found") : res.sendStatus(204)
+
+      result.affectedrow === 0 ? res.status(404).send("Not found") : res.sendStatus(204)
+
     )
     .catch((err) => {
       console.error(err);
@@ -108,9 +111,6 @@ const deleteUser = (req, res) => {
       res.status(500).send("Error deleting the User");
     });
 };
-
-
-
 
 module.exports = {
   getUsers,
